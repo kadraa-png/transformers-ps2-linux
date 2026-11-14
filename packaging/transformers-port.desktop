@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Transformers
+Comment=Transformers (PS2, 2004), native Linux port
+Exec=transformers-launcher
+Icon=transformers-port
+Terminal=false
+Categories=Game;ActionGame;

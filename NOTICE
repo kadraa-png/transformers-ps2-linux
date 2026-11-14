@@ -1,0 +1,63 @@
+Transformers PS2 Linux port
+===========================
+
+This project is licensed under the GNU General Public License, version 3 or
+(at your option) any later version. See LICENSE.
+
+It is distributed under GPL-3.0-or-later because it combines code under
+GPL-2.0-or-later (GSdx, mpeg2lib) with code under LGPL-3.0-or-later (PCSX2);
+GPL-3.0 is the license that covers the combined program.
+
+Bundled third-party code
+------------------------
+
+third_party/gsdx
+    GSdx graphics plugin from PCSX2 1.6.
+    GPL-2.0-or-later. See third_party/gsdx/COPYING.GPLv2.
+
+third_party/pcsx2_vu, third_party/pcsx2_vif
+    VU interpreter and VIF unpack code from PCSX2 1.6.
+    Copyright (C) 2002-2016 PCSX2 Dev Team. LGPL-3.0-or-later.
+
+third_party/spu2x
+    SPU2-X sound plugin from PCSX2 1.6.
+    LGPL / GPL. See third_party/spu2x/License.txt.
+
+runtime/src/hw/ipu (Mpeg.cpp, Idct.cpp, yuv2rgb.cpp)
+    mpeg2lib, as adapted by PCSX2.
+    Copyright (C) 1999-2000 Aaron Holtzman, (C) 2000-2002 Michel Lespinasse.
+    GPL-2.0-or-later.
+
+third_party/imgui
+    Dear ImGui. Copyright (c) 2014-2025 Omar Cornut. MIT License.
+    See third_party/imgui/LICENSE.txt.
+
+SDL3 (built from source, linked statically)
+    Simple DirectMedia Layer. Copyright (C) 1997-2025 Sam Lantinga.
+    zlib License.
+
+Components bundled only in the AppImage
+---------------------------------------
+
+The AppImage contains a compiler toolchain, used once on the player's machine
+to build the game from their own disc image:
+
+    GCC and binutils     GPL-3.0-or-later, with the GCC Runtime Library Exception
+    CMake                BSD-3-Clause
+    Ninja                Apache-2.0
+    Python (CPython)     PSF License 2.0
+    zlib, libpng, FreeType, xz (liblzma), linked statically
+                         zlib License, libpng License, FreeType License (FTL),
+                         0BSD / public domain
+
+Source for each of these is available from its upstream project at the
+version recorded in packaging/Dockerfile.
+
+Trademarks and game content
+---------------------------
+
+Transformers is a trademark of Hasbro. The game *Transformers* (2004) was
+developed by Melbourne House and published by Atari. This project is not
+affiliated with or endorsed by Hasbro, Atari or Melbourne House. No game code
+or data is included; you must supply your own disc image. The launcher
+artwork in packaging/art/ is taken from the game and belongs to its owners.

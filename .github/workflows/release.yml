@@ -1,0 +1,30 @@
+# Builds the AppImage. A pushed v* tag publishes a release; running the
+# workflow by hand makes a draft release (a dry run to check the artifact).
+name: Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  appimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build AppImage
+        run: packaging/build_appimage.sh --version "${{ github.ref_type == 'tag' && github.ref_name || format('dev-{0}', github.run_number) }}"
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packaging/out/*
+          generate_release_notes: true
+          draft: ${{ github.event_name == 'workflow_dispatch' }}
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('dev-{0}', github.run_number) }}

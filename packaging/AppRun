@@ -1,0 +1,6 @@
+#!/bin/sh
+# AppImage entry point: run the launcher with the bundled toolchain first on PATH.
+APPDIR=${APPDIR:-$(dirname "$(readlink -f "$0")")}
+export APPDIR
+export PATH="$APPDIR/usr/toolchain/gcc/bin:$PATH"
+exec "$APPDIR/usr/bin/transformers-launcher" "$@"

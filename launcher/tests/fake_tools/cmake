@@ -1,0 +1,16 @@
+#!/bin/sh
+# Stand-in for cmake in launcher_tests: records the call, prints its
+# arguments one per line, and writes <build dir>/build.ninja naming itself.
+work=
+prev=
+for a in "$@"; do
+  [ "$prev" = "-B" ] && work=$a
+  prev=$a
+  echo "$a"
+done
+mkdir -p "$work"
+echo called >> "$work/cmake_calls"
+# Like a real build.ninja, remember which cmake it uses: real cmake records
+# its own resolved path (and its modules next to it), not the path it was
+# started through.
+readlink -f "$0" > "$work/build.ninja"

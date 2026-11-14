@@ -1,0 +1,33 @@
+*.pyc
+__pycache__/
+
+# Build output
+/build/
+/build-*/
+AppDir/
+packaging/out/
+*.AppImage
+
+# Game data (user-supplied, never committed)
+/Transformers.iso
+/iso/
+*.iso
+*.bin
+*.cue
+*.chd
+
+# Debug output: root-level screenshots and GS dumps
+/*.png
+*.gs
+
+# Locally built SDL3 (source checkout and install prefix)
+/third_party/SDL3/
+/third_party/install/
+
+# Manual backups
+*.orig
+*.flagelim
+*.pre-*
+
+# Local tool state
+packaging/private/

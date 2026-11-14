@@ -1,0 +1,45 @@
+# Builds the prebuilt runtime and the launcher (no disc image is ever
+# available here) and runs the tests that don't need the game.
+name: CI
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build python3 git pkg-config \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxss-dev libxkbcommon-dev \
+            libwayland-dev wayland-protocols libegl-dev libgl-dev libpulse-dev libpipewire-0.3-dev \
+            libasound2-dev libudev-dev libpng-dev zlib1g-dev liblzma-dev libfreetype-dev \
+            libglib2.0-dev libglib2.0-dev-bin
+
+      - name: Cache SDL3
+        id: sdl3
+        uses: actions/cache@v4
+        with:
+          path: third_party/install
+          key: sdl3-release-3.2.26-${{ runner.os }}
+
+      - name: Build SDL3
+        if: steps.sdl3.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 -b release-3.2.26 https://github.com/libsdl-org/SDL.git third_party/SDL3
+          cmake -S third_party/SDL3 -B third_party/SDL3/build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DSDL_SHARED=OFF -DSDL_STATIC=ON -DSDL_TESTS=OFF -DCMAKE_INSTALL_PREFIX=$PWD/third_party/install
+          ninja -C third_party/SDL3/build install
+
+      - name: Build runtime and launcher
+        run: |
+          cmake -S . -B build -G Ninja -DPS2_RUNTIME_ONLY=ON
+          ninja -C build
+
+      - name: Test
+        run: |
+          ./build/launcher/launcher_tests
+          python3 -m unittest tools/tests/test_extract_iso_files.py
+          sh packaging/check_runtime_split.sh build
